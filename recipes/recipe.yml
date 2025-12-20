@@ -1,9 +1,9 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 # image will be published to ghcr.io/<user>/<name>
-name: template
+name: onirigiri
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: lightweight desktop using niri and dms
 
 # the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/silverblue-main
@@ -21,9 +21,20 @@ modules:
     repos:
       copr:
         - atim/starship
+        - avengemedia/dms-git
+        - yalter/niri-git
     install:
       packages:
-        - micro
+        # dankmaterialshell
+        - dms
+        - dms-greeter
+        - dgop
+        - dsearch
+        - ghostty
+        - niri
+        # official packages
+        - fish
+        - neovim
         - starship
     remove:
       packages:
@@ -42,4 +53,21 @@ modules:
           - org.gnome.Loupe
       - scope: user # Also add Flathub user repo, but no user packages
 
+  - type: systemd
+    user:
+      enabled:
+        - dms.service
+        - dsearch.service
+
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - Iosevka
+        - JetBrainsMono
+      google-fonts:
+        - Inter
+        - Open Sans
+        - Roboto
+
+  - type: brew
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
